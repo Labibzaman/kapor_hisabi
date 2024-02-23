@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kapor_hisabi_new/theme_manager.dart';
+
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,6 +17,10 @@ class _HomeScreenState extends State<HomeScreen> {
   String selectedGiraValue = '0';
 
   double result = 0;
+
+  final Uri _url = Uri.parse('https://www.facebook.com/imlabibzaman');
+
+  ThemeManager _themeManager = ThemeManager();
 
   @override
   void initState() {
@@ -47,12 +54,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        actions: [
+          Switch(value: false, onChanged: (value){})
+        ],
         leading: Image.asset(
           'assets/images/logo1.png',
           height: 38,
           width: 95,
           fit: BoxFit.cover,
         ),
+        titleSpacing: 8.5,
         elevation: 4,
         backgroundColor: Colors.white,
         centerTitle: true,
@@ -66,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.black54),
             ),
             Text(
-              'সঠিক ম্যাপ',
+              'সঠিক মাপ',
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10),
             ),
           ],
@@ -180,11 +191,44 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 190,
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/images/bottom.png',
+                        height: 70,
+                        width: 100,
+                      ),
+                      OutlinedButton(
+                        onPressed: _launchUrl,
+                        child: Column(
+                          children: [
+                            Text(
+                              'Labib Zaman',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                            Text('click to contact Us'),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
   }
 }
